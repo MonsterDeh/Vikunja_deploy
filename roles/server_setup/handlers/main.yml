@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for roles/server_setup
+- name: Restart Docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted

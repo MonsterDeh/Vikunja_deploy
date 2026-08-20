@@ -1,0 +1,57 @@
+#SPDX-License-Identifier: MIT-0
+---
+
+# tasks file for roles/debian
+# - name: Remove legacy custom mirror list
+#   ansible.builtin.file:
+#     path: /etc/apt/sources.list.d/custom-mirrors.sources
+#     state: absent
+
+- name: Set custom debian sources list (mirror) for debian 
+  ansible.builtin.template:
+    src: apt.j2
+    dest: /etc/apt/sources.list.d/custom-mirrors.list
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Update apt cache
+  
+
+# - name: Install sudo
+#   apt:
+#     name: sudo
+#     state: present
+#     update_cache: yes
+#   notify: Update apt cache
+#   ignore_errors: true
+
+
+
+# - name: Set the connecting username
+#   set_fact:
+#     connecting_user: "{{ ansible_user | default(ansible_env.USER, true) }}"
+  
+# - name: Ensure user is a member of the sudo group
+#   user:
+#     name: "{{ connecting_user }}"
+#     groups: sudo
+#     append: yes
+
+# - name: Make dir
+#   ansible.builtin.file:  
+#     path: /etc/sudoers.d 
+#     state: directory 
+
+# - name: Template sudoers entry
+#   template:
+#     src: sudoers.j2
+#     dest: "/etc/sudoers.d/{{ connecting_user }}"
+#     owner: root
+#     group: root
+#     mode: '0440'
+#     validate: 'visudo -cf %s'
+#   notify: reload sudo      
+
+
+
+

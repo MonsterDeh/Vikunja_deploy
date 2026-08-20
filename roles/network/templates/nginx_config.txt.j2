@@ -1,0 +1,46 @@
+# Nginx reverse proxy for Vikunja.
+# The certificate and key are generated/provisioned on the host and mounted
+# read-only into the container at {{ nginx_ssl_container_dir }}.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ nginx_server_name }};
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name {{ nginx_server_name }};
+
+    client_max_body_size 20M;
+
+    ssl_certificate     {{ nginx_ssl_container_dir }}/{{ nginx_ssl_certificate }};
+    ssl_certificate_key {{ nginx_ssl_container_dir }}/{{ nginx_ssl_certificate_key }};
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5:!3DES;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    location / {
+        proxy_pass http://{{ nginx_upstream_host }}:{{ nginx_upstream_port }};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    error_page 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+    }
+
+    access_log /var/log/nginx/vikunja_access.log;
+    error_log /var/log/nginx/vikunja_error.log;
+}

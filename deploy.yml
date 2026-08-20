@@ -1,0 +1,20 @@
+- hosts: webserver
+  become: yes
+  gather_facts: yes
+  tasks:
+
+    # - name: Run role only on Debian 
+    #   include_role:
+    #     name: debian
+    #   when: ansible_facts['distribution'] == 'Debian'
+    
+    # - name: server_setup
+    #   include_role:
+    #     name: server_setup
+  
+    - name: app_setup
+      include_role:
+        name: app_setup
+      tags:
+        # - install      
+        - deploy  

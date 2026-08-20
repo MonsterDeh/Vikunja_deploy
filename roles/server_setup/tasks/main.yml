@@ -1,0 +1,104 @@
+# Task file for roles/server_setup
+---
+
+- name: Update apt cache and upgrade packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+    cache_valid_time: 3600
+
+- name: Install required base packages
+  apt:
+    name:
+      - curl
+      - wget
+      - git
+      - vim
+      - htop
+      - ufw
+      - ca-certificates
+      - gnupg
+      - lsb-release
+    state: present
+
+- name: Add Docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker apt repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Install Docker Engine and Compose plugin
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: present
+    update_cache: yes
+
+
+
+
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add user(s) to the docker group
+  user:
+    name: "{{ item }}"
+    groups: "{{docker_group}}"
+    append: yes
+  loop: "{{ docker_users }}"
+
+
+- name: Set Docker registry mirrors
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    mode: "0644"
+    content: |
+      {
+        "registry-mirrors": {{ docker_registry_mirrors | to_json }}
+      }
+  notify: Restart Docker
+
+# - name: Install Nginx
+#   apt:
+#     name: nginx
+#     state: present
+
+# - name: Start and enable Nginx service
+#   systemd:
+#     name: nginx
+#     state: started
+#     enabled: yes
+
+- name: Allow SSH through the firewall
+  ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+
+- name: Allow HTTP through the firewall
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: Allow HTTPS through the firewall
+  ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+
+- name: Enable UFW with a default-deny policy
+  ufw:
+    state: enabled
+    policy: deny

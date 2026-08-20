@@ -1,0 +1,53 @@
+services:
+  vikunja:
+    image: vikunja/vikunja:2.5.0
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: https://vikunja.example.com/
+      VIKUNJA_SERVICE_SECRET: ${VIKUNJA_SERVICE_SECRET}
+      VIKUNJA_DATABASE_HOST: ${VIKUNJA_DATABASE_HOST}
+      VIKUNJA_DATABASE_PASSWORD: ${VIKUNJA_DATABASE_PASSWORD}
+      VIKUNJA_DATABASE_TYPE: postgres
+      VIKUNJA_DATABASE_USER:  ${VIKUNJA_DATABASE_USER}
+      VIKUNJA_DATABASE_DATABASE: ${VIKUNJA_DATABASE_DATABASE}
+      VIKUNJA_DATABASE_PATH: /db/vikunja.db
+    ports:
+      - 127.0.0.1:${App_INTERNAL_PORT}:3456
+    volumes:
+      - ./files:/app/vikunja/files
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_USER: vikunja
+    volumes:
+      - ./db:/var/lib/postgresql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U $$POSTGRES_USER"]
+      interval: 2s
+      start_period: 30s
+
+  nginx:
+    image: nginx:1.31
+    depends_on:
+      - vikunja
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # فایل کانفیگ HTTP-only (مرحله 6). برای فعال کردن SSL (مرحله 7)،
+      # این خط رو به 07_ssl/nginx_ssl_config.txt عوض کن و ولوم گواهی رو هم اضافه کن.
+      - ./06_nginx/nginx_config.txt:/etc/nginx/conf.d/default.conf:ro
+      # برای مرحله‌ی SSL، این خط رو هم از کامنت درار:
+      # - ./07_ssl/certs:/etc/nginx/ssl:ro
+    restart: unless-stopped
+    networks:
+      - vikunja_net
+
+networks:
+  vikunja_net:
+    driver: bridge      

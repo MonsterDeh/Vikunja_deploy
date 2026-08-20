@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Team
+  description: Shared Docker network and Nginx reverse proxy for Vikunja
+  license: MIT
+  min_ansible_version: "2.14"
+  galaxy_tags:
+    - docker
+    - nginx
+    - networking
+    - ssl
+
+dependencies: []
+  # - app_setup

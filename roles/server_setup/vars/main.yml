@@ -1,0 +1,24 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for roles/server_setup
+    docker_group: docker
+    docker_users:
+    - "{{ ansible_user }}"
+
+    docker_registry_mirrors:
+      - "https://docker-mirror.liara.ir"
+      - "https://docker.arvancloud.ir"
+      - "https://docker.abrha.net"
+      - "https://mirror-docker.runflare.com"
+          
+    # docker_packages:
+    #   - docker-ce
+    #   - docker-ce-cli
+    #   - containerd.io
+    #   - docker-buildx-plugin
+    #   - docker-compose-plugin
+
+
+
+# docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin      

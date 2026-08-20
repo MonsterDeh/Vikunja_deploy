@@ -1,0 +1,10 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for roles/debian
+
+- name: reload sudo
+  command: /usr/sbin/visudo -c
+
+- name: Update apt cache
+  apt:
+    update_cache: yes

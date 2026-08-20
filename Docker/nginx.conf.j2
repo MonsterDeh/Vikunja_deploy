@@ -1,0 +1,9 @@
+server {
+    listen       80;
+    server_name  {{ APP_URL_PUBLIC }};
+
+    location / {
+        proxy_pass http://localhost:{{App_INTERNAL_PORT}};
+        client_max_body_size 20M;
+    }
+}

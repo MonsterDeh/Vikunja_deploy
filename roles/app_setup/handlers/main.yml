@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for roles/app_setup
+- name: Restart Vikunja
+  community.docker.docker_compose_v2:
+    project_src: "{{vikunja_path_file}}"
+    state: restarted

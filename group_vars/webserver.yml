@@ -1,0 +1,26 @@
+vikunja_path_file: "/opt/vikunja/"
+vikunja_url_public: "vikunja.example.com"
+vikunja_service_secret: "dbcd0b6b9646d0f09a380c0aec5ee112fdc43a2a8d8f4145aea322c98c48354b"
+vikunja_database_host: "db"
+vikunja_database_password: "changeme"
+vikunja_database_user: "vikunja"
+vikunja_database_name: "vikunja"
+app_internal_port: 3456
+
+docker_network_name: "vikunja_net"
+
+nginx_path_file: "/opt/nginx/"
+nginx_server_name: "{{ vikunja_url_public }}"
+nginx_upstream_host: "vikunja"
+nginx_upstream_port: 3456
+nginx_http_port: 80
+nginx_https_port: 443
+nginx_image: "nginx:1.27-alpine"
+nginx_container_name: "vikunja-nginx"
+nginx_ssl_host_dir: "/etc/nginx/ssl"
+nginx_ssl_container_dir: "/etc/nginx/ssl"
+nginx_ssl_certificate: "{{ nginx_server_name }}.crt"
+nginx_ssl_certificate_key: "{{ nginx_server_name }}.key"
+nginx_ssl_generate_self_signed: true
+nginx_ssl_valid_days: 365
+

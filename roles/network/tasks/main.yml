@@ -1,0 +1,166 @@
+---
+# Create the shared Docker network and deploy the Nginx reverse proxy.
+
+- name: Create shared Docker bridge network
+  community.docker.docker_network:
+    name: "{{ docker_network_name }}"
+    driver: bridge
+    state: present
+  tags:
+    - network
+    - deploy
+
+- name: Create Nginx project directory
+  ansible.builtin.file:
+    path: "{{ nginx_path_file }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - install
+    - deploy
+
+- name: Create host directory for TLS certificates
+  ansible.builtin.file:
+    path: "{{ nginx_ssl_host_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+  tags:
+    - ssl
+    - deploy
+
+- name: Install OpenSSL
+  ansible.builtin.package:
+    name: openssl
+    state: present
+  when: nginx_ssl_generate_self_signed | bool
+  tags:
+    - ssl
+    - deploy
+
+- name: Generate self-signed TLS certificate and private key
+  ansible.builtin.command:
+    argv:
+      - openssl
+      - req
+      - -x509
+      - -nodes
+      - -newkey
+      - rsa:2048
+      - -days
+      - "{{ nginx_ssl_valid_days | string }}"
+      - -keyout
+      - "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate_key }}"
+      - -out
+      - "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate }}"
+      - -subj
+      - "/CN={{ nginx_server_name }}"
+      - -addext
+      - "subjectAltName=DNS:{{ nginx_server_name }}"
+    creates: "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate }}"
+  when: nginx_ssl_generate_self_signed | bool
+  notify: Restart Nginx
+  tags:
+    - ssl
+    - deploy
+
+- name: Set TLS private key permissions
+  ansible.builtin.file:
+    path: "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate_key }}"
+    owner: root
+    group: root
+    mode: "0600"
+  when: nginx_ssl_generate_self_signed | bool
+  tags:
+    - ssl
+    - deploy
+
+- name: Set TLS certificate permissions
+  ansible.builtin.file:
+    path: "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: nginx_ssl_generate_self_signed | bool
+  tags:
+    - ssl
+    - deploy
+
+- name: Check TLS certificate
+  ansible.builtin.stat:
+    path: "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate }}"
+  register: nginx_tls_certificate
+  tags:
+    - ssl
+    - deploy
+
+- name: Check TLS private key
+  ansible.builtin.stat:
+    path: "{{ nginx_ssl_host_dir }}/{{ nginx_ssl_certificate_key }}"
+  register: nginx_tls_private_key
+  tags:
+    - ssl
+    - deploy
+
+- name: Verify TLS files exist before starting Nginx
+  ansible.builtin.assert:
+    that:
+      - nginx_tls_certificate.stat.exists
+      - nginx_tls_private_key.stat.exists
+    fail_msg: >-
+      TLS certificate or private key is missing under {{ nginx_ssl_host_dir }}.
+      Enable nginx_ssl_generate_self_signed or provision both files before deployment.
+  tags:
+    - ssl
+    - deploy
+
+- name: Render Nginx environment file
+  ansible.builtin.template:
+    src: .env.j2
+    dest: "{{ nginx_path_file }}/.env"
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  notify: Restart Nginx
+  tags:
+    - install
+    - deploy
+
+- name: Render Nginx reverse proxy configuration
+  ansible.builtin.template:
+    src: nginx_config.txt.j2
+    dest: "{{ nginx_path_file }}/nginx_config.txt"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Nginx
+  tags:
+    - install
+    - deploy
+    - ssl
+
+- name: Copy Nginx Docker Compose file
+  ansible.builtin.copy:
+    src: "{{ nginx_compose_filename }}"
+    dest: "{{ nginx_path_file }}/{{ nginx_compose_filename }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Nginx
+  tags:
+    - install
+    - deploy
+
+- name: Deploy Nginx reverse proxy
+  community.docker.docker_compose_v2:
+    project_src: "{{ nginx_path_file }}"
+    files:
+      - "{{ nginx_compose_filename }}"
+    state: present
+  tags:
+    - deploy
+    - docker

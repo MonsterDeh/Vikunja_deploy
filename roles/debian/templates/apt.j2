@@ -1,0 +1,67 @@
+{% if ansible_distribution_major_version == '11' %}
+{%   set codename = 'bullseye' %}
+{%   set components = 'main contrib non-free' %}
+{% elif ansible_distribution_major_version == '12' %}
+{%   set codename = 'bookworm' %}
+{%   set components = 'main contrib non-free non-free-firmware' %}
+{% elif ansible_distribution_major_version == '13' %}
+{%   set codename = 'trixie' %}
+{%   set components = 'main contrib non-free non-free-firmware' %}
+{% else %}
+{%   set codename = ansible_distribution_release %}
+{%   set components = 'main contrib non-free non-free-firmware' %}
+{% endif %}
+
+# ------------------------------------------------------------------------------
+# Parspack
+# Source: https://docs.parspack.com/reference/mirror/linux/
+# deb https://repo.abrha.net/debian {{ codename }} {{ components }}
+# deb https://repo.abrha.net/debian {{ codename }}-updates {{ components }}
+# deb https://repo.abrha.net/debian {{ codename }}-backports {{ components }}
+# deb https://repo.abrha.net/debian-security {{ codename }}-security {{ components }}
+
+# Source repositories - Parspack
+# deb-src https://repo.abrha.net/debian {{ codename }} {{ components }}
+# deb-src https://repo.abrha.net/debian {{ codename }}-updates {{ components }}
+# deb-src https://repo.abrha.net/debian {{ codename }}-backports {{ components }}
+# deb-src https://repo.abrha.net/debian-security {{ codename }}-security {{ components }}
+
+# ------------------------------------------------------------------------------
+# SHATEL
+# Source: https://mirror.shatel.ir/
+deb http://mirror.shatel.ir/debian {{ codename }} {{ components }}
+deb http://mirror.shatel.ir/debian {{ codename }}-updates {{ components }}
+deb http://mirror.shatel.ir/debian {{ codename }}-backports {{ components }}
+deb http://mirror.shatel.ir/debian-security {{ codename }}-security {{ components }}
+
+# Source repositories - SHATEL
+ deb-src http://mirror.shatel.ir/debian {{ codename }} {{ components }}
+ deb-src http://mirror.shatel.ir/debian {{ codename }}-updates {{ components }}
+ deb-src http://mirror.shatel.ir/debian {{ codename }}-backports {{ components }}
+ deb-src http://mirror.shatel.ir/debian-security {{ codename }}-security {{ components }}
+
+
+# ------------------------------------------------------------------------------
+# GOVERNMENT / ITO
+# deb https://archive.ito.gov.ir/debian/ {{ codename }} main
+# deb https://archive.ito.gov.ir/debian-security {{ codename }}-security main
+# deb https://archive.ito.gov.ir/debian/ {{ codename }}-updates main
+# deb https://archive.ito.gov.ir/debian/ {{ codename }}-backports main
+
+# Source repositories - ITO
+# deb-src https://archive.ito.gov.ir/debian/ {{ codename }} main
+# deb-src https://archive.ito.gov.ir/debian-security {{ codename }}-security main
+# deb-src https://archive.ito.gov.ir/debian/ {{ codename }}-updates main
+# deb-src https://archive.ito.gov.ir/debian/ {{ codename }}-backports main
+
+
+ # ------------------------------------------------------------------------------
+
+ # ARVANCLOUD
+# deb http://mirror.arvancloud.ir/debian {{ codename }} main
+# deb http://mirror.arvancloud.ir/debian-security {{ codename }}-security main
+
+# Source repositories - ARVANCLOUD
+# deb-src http://mirror.arvancloud.ir/debian {{ codename }} main
+# deb-src http://mirror.arvancloud.ir/debian-security {{ codename }}-security main
+
