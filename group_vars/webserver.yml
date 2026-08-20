@@ -1,5 +1,5 @@
 vikunja_path_file: "/opt/vikunja/"
-vikunja_url_public: "vikunja.example.com"
+vikunja_url_public: "vikunja.example.test"
 vikunja_service_secret: "dbcd0b6b9646d0f09a380c0aec5ee112fdc43a2a8d8f4145aea322c98c48354b"
 vikunja_database_host: "db"
 vikunja_database_password: "changeme"
