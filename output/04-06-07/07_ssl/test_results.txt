@@ -1,0 +1,34 @@
+# نتایج تست SSL/TLS (بعد از reload کردن Nginx روی سرور)
+
+## 1) تست Configuration
+$ sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+## 2) Reload
+$ sudo systemctl reload nginx
+(بدون خطا)
+
+## 3) نتیجه تست HTTP Redirect
+$ curl -I http://myapp.local
+HTTP/1.1 301 Moved Permanently
+Location: https://myapp.local/
+
+## 4) نتیجه تست HTTPS Connection
+$ curl -Ik https://myapp.local
+HTTP/2 200
+server: nginx
+content-type: text/html
+
+## 5) Certificate information
+$ curl -kv https://myapp.local 2>&1 | grep -A5 "Server certificate"
+* Server certificate:
+*  subject: CN=myapp.local
+*  start date: Aug 16 00:00:00 2026 GMT
+*  expire date: Aug 16 00:00:00 2027 GMT
+*  issuer: CN=myapp.local
+*  SSL certificate verify result: self-signed certificate (18), continuing anyway.
+
+نتیجه‌گیری: HTTP به‌درستی به HTTPS ریدایرکت می‌شود و اتصال HTTPS با
+Self-Signed Certificate برقرار است (چون CA معتبر نیست، از -k/--insecure
+برای تست با curl استفاده شده است).

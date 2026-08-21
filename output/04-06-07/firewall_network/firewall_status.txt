@@ -1,0 +1,26 @@
+# خروجی نمونه: sudo ufw status verbose
+# (بعد از اجرای ufw_setup.sh روی سرور)
+
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp (SSH)               ALLOW IN    Anywhere
+80/tcp (HTTP)               ALLOW IN    Anywhere
+443/tcp (HTTPS)              ALLOW IN    Anywhere
+22/tcp (SSH v6)             ALLOW IN    Anywhere (v6)
+80/tcp (HTTP v6)             ALLOW IN    Anywhere (v6)
+443/tcp (HTTPS v6)            ALLOW IN    Anywhere (v6)
+
+توضیح:
+- فقط پورت‌های 22 (SSH), 80 (HTTP) و 443 (HTTPS) از بیرون قابل دسترسی‌اند.
+- پورت‌های داخلی Docker (مثل 3456 برای api و پورت داخلی frontend) عمداً
+  در ufw باز نشده‌اند چون این سرویس‌ها فقط باید از طریق Nginx (روی 80/443)
+  در دسترس باشند، نه به‌صورت مستقیم از اینترنت.
+- توجه: Docker به‌صورت پیش‌فرض قوانین iptables خودش را مستقیماً اضافه می‌کند
+  و ممکن است بعضی پورت‌های publish‌شده در docker-compose.yml را دور بزند؛
+  به همین دلیل توصیه می‌شود در docker-compose فقط پورت Nginx (proxy) به
+  بیرون publish شود و frontend/api/db هیچ port mapping به بیرون نداشته باشند.

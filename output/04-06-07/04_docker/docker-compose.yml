@@ -1,0 +1,67 @@
+# docker-compose.yml
+# نسخه‌ی کامل: همون compose واقعی که خودت پیدا کردی (vikunja/vikunja + db)
+# + یک سرویس nginx اضافه شده تا reverse proxy واقعاً قابل تست باشه.
+#
+# نکته: تعریف سرویس‌های vikunja و db دقیقاً همونیه که خودت پیست کردی
+# (بخش امین/Docker) — من فقط شبکه (networks) و سرویس nginx رو اضافه کردم
+# تا بشه بخش من (Nginx/SSL/Firewall) رو روش تست کرد.
+
+services:
+  vikunja:
+    image: vikunja/vikunja:2.5.0
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: https://myapp.local/
+      VIKUNJA_SERVICE_SECRET: dbcd0b6b9646d0f09a380c0aec5ee112fdc43a2a8d8f4145aea322c98c48354b
+      VIKUNJA_DATABASE_HOST: db
+      VIKUNJA_DATABASE_PASSWORD: changeme
+      VIKUNJA_DATABASE_TYPE: postgres
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_DATABASE: vikunja
+    # این پورت فقط برای دسترسی مستقیم/دیباگ از خود سرور نگه داشته شده؛
+    # مسیر اصلی ورود کاربر از طریق nginx (پورت 80/443) است.
+    ports:
+      - 127.0.0.1:3456:3456
+    volumes:
+      - ./files:/app/vikunja/files
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - vikunja_net
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_USER: vikunja
+    volumes:
+      - ./db:/var/lib/postgresql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U $$POSTGRES_USER"]
+      interval: 2s
+      start_period: 30s
+    networks:
+      - vikunja_net
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - vikunja
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # فایل کانفیگ HTTP-only (مرحله 6). برای فعال کردن SSL (مرحله 7)،
+      # این خط رو به 07_ssl/nginx_ssl_config.txt عوض کن و ولوم گواهی رو هم اضافه کن.
+      - ./06_nginx/nginx_config.txt:/etc/nginx/conf.d/default.conf:ro
+      # برای مرحله‌ی SSL، این خط رو هم از کامنت درار:
+      # - ./07_ssl/certs:/etc/nginx/ssl:ro
+    restart: unless-stopped
+    networks:
+      - vikunja_net
+
+networks:
+  vikunja_net:
+    driver: bridge

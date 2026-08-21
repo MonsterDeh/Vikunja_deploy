@@ -1,0 +1,17 @@
+# خروجی نمونه بعد از اجرای generate_certificate.sh روی سرور
+# (این فایل باید بعد از اجرای واقعی روی سرور، با خروجی واقعی جایگزین شود)
+
+مسیر فایل‌ها (Certificate files):
+  Private key : /etc/nginx/ssl/myapp.local.key
+  Certificate : /etc/nginx/ssl/myapp.local.crt
+
+اطلاعات Certificate (نمونه‌ی خروجی openssl x509 -in myapp.local.crt -noout -dates -subject):
+  notBefore=Aug 16 00:00:00 2026 GMT
+  notAfter=Aug 16 00:00:00 2027 GMT
+  subject=C=IR, ST=Tehran, L=Tehran, O=DevOps-Homework, OU=Team, CN=myapp.local
+
+Expiry date: تقریباً یک سال بعد از تاریخ تولید (365 روز)
+
+توجه: چون certificate از نوع self-signed است، مرورگر هنگام اتصال هشدار
+"Not Secure / Certificate not trusted" نشان می‌دهد؛ این رفتار طبیعی است
+و برای محیط production باید از یک CA معتبر (مثل Let's Encrypt) استفاده شود.
