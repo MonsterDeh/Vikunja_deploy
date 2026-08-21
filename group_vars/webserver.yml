@@ -8,7 +8,7 @@ vikunja_database_name: "vikunja"
 app_internal_port: 3456
 
 docker_network_name: "vikunja_net"
-
+# /nginx_vars.yml
 nginx_path_file: "/opt/nginx/"
 nginx_server_name: "{{ vikunja_url_public }}"
 nginx_upstream_host: "vikunja"

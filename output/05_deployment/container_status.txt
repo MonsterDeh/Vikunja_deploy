@@ -1,0 +1,6 @@
+Pseudo-terminal will not be allocated because stdin is not a terminal.
+Connecting to ubuntu@192.168.1.5 for status ...
+===== Container status (docker-compose ps) =====
+[sudo] password for ubuntu: NAME                IMAGE                   COMMAND                  SERVICE   CREATED        STATUS                  PORTS
+vikunja-db-1        postgres:18             "docker-entrypoint.s…"   db        21 hours ago   Up 14 hours (healthy)   5432/tcp
+vikunja-vikunja-1   vikunja/vikunja:2.5.0   "/app/vikunja/vikunja"   vikunja   21 hours ago   Up 14 hours             127.0.0.1:3456->3456/tcp

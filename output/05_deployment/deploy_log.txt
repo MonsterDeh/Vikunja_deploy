@@ -1,0 +1,11 @@
+Pseudo-terminal will not be allocated because stdin is not a terminal.
+Connecting to ubuntu@192.168.1.5 for deployment ...
+===== Deployment started at Fri Aug 21 08:41:49 AM UTC 2026 =====
+>>> Building images...
+[sudo] password for ubuntu: time="2026-08-21T08:41:49Z" level=warning msg="No services to build"
+>>> Starting containers...
+ Container vikunja-vikunja-1 Running 
+ Container vikunja-db-1 Running 
+ Container vikunja-db-1 Waiting 
+ Container vikunja-db-1 Healthy 
+===== Deployment finished at Fri Aug 21 08:41:49 AM UTC 2026 =====
