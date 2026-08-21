@@ -1,0 +1,221 @@
+.
+├── README.md
+├── Tasks_I_Did.md
+├── ansible.cfg
+├── deploy.yml
+├── group_vars
+│   ├── all.yml
+│   └── webserver.yml
+├── host.ini
+├── output
+│   ├── 01_environment
+│   │   ├── 01_collect_server_info.sh
+│   │   ├── guide.md
+│   │   └── server_connection.txt
+│   ├── 02_ansible_setup
+│   │   ├── 02_ansible_commands.sh
+│   │   ├── facts.txt
+│   │   ├── guide.md
+│   │   ├── ping_test.txt
+│   │   ├── playbook_output.txt
+│   │   ├── server_setup.yml
+│   │   └── verification.txt
+│   └── 03_project_clone
+│       ├── project_info.md
+│       └── project_structure.txt
+├── roles
+│   ├── app_setup
+│   │   ├── README.md
+│   │   ├── defaults
+│   │   │   └── main.yml
+│   │   ├── files
+│   │   │   └── docker-compose.yml
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   ├── meta
+│   │   │   └── main.yml
+│   │   ├── tasks
+│   │   │   └── main.yml
+│   │   ├── templates
+│   │   ├── tests
+│   │   │   ├── inventory
+│   │   │   └── test.yml
+│   │   └── vars
+│   │       └── main.yml
+│   ├── debian
+│   │   ├── README.md
+│   │   ├── defaults
+│   │   │   └── main.yml
+│   │   ├── files
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   ├── meta
+│   │   │   └── main.yml
+│   │   ├── tasks
+│   │   │   └── main.yml
+│   │   ├── templates
+│   │   │   ├── apt.j2
+│   │   │   └── sudoers.j2
+│   │   ├── tests
+│   │   │   ├── inventory
+│   │   │   └── test.yml
+│   │   └── vars
+│   │       └── main.yml
+│   ├── network
+│   │   ├── README.md
+│   │   ├── defaults
+│   │   │   └── main.yml
+│   │   ├── files
+│   │   │   └── docker-compose-ngnix.yml
+│   │   ├── handlers
+│   │   │   └── main.yml
+│   │   ├── meta
+│   │   │   └── main.yml
+│   │   ├── tasks
+│   │   │   └── main.yml
+│   │   ├── templates
+│   │   │   └── nginx_config.txt.j2
+│   │   └── tests
+│   │       ├── inventory
+│   │       └── test.yml
+│   └── server_setup
+│       ├── README.md
+│       ├── defaults
+│       │   └── main.yml
+│       ├── files
+│       ├── handlers
+│       │   └── main.yml
+│       ├── meta
+│       │   └── main.yml
+│       ├── tasks
+│       │   └── main.yml
+│       ├── templates
+│       │   └── main.yml
+│       ├── tests
+│       │   ├── inventory
+│       │   └── test.yml
+│       └── vars
+│           └── main.yml
+├── temp
+│   ├── apt.j2
+│   ├── output
+│   │   ├── 00_index.md
+│   │   ├── 01_environment
+│   │   │   ├── 01_collect_server_info.sh
+│   │   │   ├── guide.md
+│   │   │   └── server_connection.txt
+│   │   ├── 02_ansible_setup
+│   │   │   ├── 02_ansible_commands.sh
+│   │   │   ├── facts.txt
+│   │   │   ├── guide.md
+│   │   │   └── ping_test.txt
+│   │   ├── 03_project_clone
+│   │   │   ├── 03_clone_and_inspect.sh
+│   │   │   └── guide.md
+│   │   ├── 04_docker
+│   │   │   ├── 04_build_and_test.sh
+│   │   │   └── guide.md
+│   │   ├── 05_deployment
+│   │   │   ├── 05_deploy_to_server.sh
+│   │   │   └── guide.md
+│   │   ├── 06_nginx
+│   │   │   ├── 06_enable_and_test_nginx.sh
+│   │   │   └── guide.md
+│   │   ├── 07_ssl
+│   │   │   ├── 07_generate_and_test_ssl.sh
+│   │   │   └── guide.md
+│   │   └── 08_ansible_automation
+│   │       ├── 08_run_playbooks.sh
+│   │       └── guide.md
+│   ├── project
+│   │   ├── 01_environment
+│   │   │   ├── server_connection.txt
+│   │   │   └── server_info.md
+│   │   ├── 02_ansible_setup
+│   │   │   ├── facts.txt
+│   │   │   ├── inventory
+│   │   │   ├── ping_test.txt
+│   │   │   ├── playbook_output.txt
+│   │   │   ├── server_setup.yml
+│   │   │   └── verification.txt
+│   │   ├── 03_project_clone
+│   │   │   ├── project_info.md
+│   │   │   └── project_structure.txt
+│   │   ├── 04_docker
+│   │   │   ├── Dockerfile
+│   │   │   ├── app
+│   │   │   │   ├── app.py
+│   │   │   │   ├── requirements.txt
+│   │   │   │   ├── static
+│   │   │   │   │   └── style.css
+│   │   │   │   └── templates
+│   │   │   │       └── index.html
+│   │   │   ├── build_log.txt
+│   │   │   ├── compose_explanation.md
+│   │   │   ├── container_status.txt
+│   │   │   ├── docker-compose.yml
+│   │   │   ├── dockerfile_explanation.md
+│   │   │   └── test_results.txt
+│   │   ├── 05_deployment
+│   │   │   ├── container_logs.txt
+│   │   │   ├── container_status.txt
+│   │   │   ├── deploy_log.txt
+│   │   │   └── test_results.txt
+│   │   ├── 06_nginx
+│   │   │   ├── hosts_file.txt
+│   │   │   ├── nginx_config.txt
+│   │   │   ├── nginx_explanation.md
+│   │   │   └── test_results.txt
+│   │   ├── 07_ssl
+│   │   │   ├── certificate_info.txt
+│   │   │   ├── certs
+│   │   │   │   ├── myapp.local.crt
+│   │   │   │   └── myapp.local.key
+│   │   │   ├── nginx_ssl_config.txt
+│   │   │   └── test_results.txt
+│   │   ├── 08_ansible_automation
+│   │   │   ├── app_vars.yml
+│   │   │   ├── deploy_app.yml
+│   │   │   ├── deploy_nginx.yml
+│   │   │   ├── nginx_vars.yml
+│   │   │   ├── playbook_output.txt
+│   │   │   ├── server_setup.yml
+│   │   │   ├── site.yml
+│   │   │   ├── templates
+│   │   │   │   └── nginx.conf.j2
+│   │   │   └── verification.txt
+│   │   ├── 09_documentation
+│   │   │   ├── architecture.md
+│   │   │   ├── deployment_guide.md
+│   │   │   └── troubleshooting.md
+│   │   ├── 10_delivery
+│   │   │   ├── final_structure.txt
+│   │   │   ├── git_history.txt
+│   │   │   ├── project_summary.md
+│   │   │   └── team_contribution.md
+│   │   └── README.md
+│   ├── python
+│   │   ├── test_all_debian_mirror.py
+│   │   └── test_gov.py
+│   ├── reza_devops_v2
+│   │   ├── 04_docker
+│   │   │   └── docker-compose.yml
+│   │   ├── 06_nginx
+│   │   │   ├── hosts_file.txt
+│   │   │   ├── nginx_config.txt
+│   │   │   └── nginx_explanation.md
+│   │   ├── 07_ssl
+│   │   │   ├── certificate_info.txt
+│   │   │   ├── generate_certificate.sh
+│   │   │   ├── nginx_ssl_config.txt
+│   │   │   └── test_results.txt
+│   │   ├── README.md
+│   │   └── firewall_network
+│   │       ├── docker_network_design.md
+│   │       ├── firewall_status.txt
+│   │       └── ufw_setup.sh
+│   └── roles_server_setup_tasks_main.yml
+├── text_project.md
+└── tree.txt
+
+74 directories, 145 files

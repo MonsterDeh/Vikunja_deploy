@@ -1,0 +1,24 @@
+Project Structure:
+
+```text
+.
+├── output
+├── ansible.cfg
+├── host.ini
+├── deploy.yml
+├── group_vars/
+│   ├── all.yml
+│   └── webserver.yml
+└── roles/
+    ├── debian/
+    ├── server_setup/
+    ├── app_setup/
+    └── network/
+```
+
+Important Files:
+- ansible/site.yml: فایل اصلی اجرای پلی‌بوک‌های انسیبل.
+- roles\app_setup\files\docker-compose.yml: پیکربندی کانتینرهای پروژه.
+- roles\app_setup\files\docker-compose.yml: پیکربندی کانتینرهای ngnix.
+- hosts.ini: تعریف سرورها و متغیرهای دسترسی.
+- scripts/deploy.sh: اسکریپت خودکارسازی استقرار.

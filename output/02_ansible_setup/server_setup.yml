@@ -1,0 +1,8 @@
+- name: Prepare server for deployment
+  hosts: webserver
+  become: yes
+
+  tasks:
+    - name: Include my role from external path
+      include_role:
+        name: "{{REPO_ROOT}}/roles/app_setup"

@@ -1,0 +1,4 @@
+server3 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}

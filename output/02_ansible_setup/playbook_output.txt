@@ -1,0 +1,111 @@
+
+PLAY [Prepare server for deployment] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [server3]
+
+TASK [Include my role from external path] **************************************
+included: /mnt/z/Codes/Team/roles/app_setup for server3
+
+TASK [server_setup : Update apt cache and upgrade packages] ********************
+ok: [server3]
+
+TASK [server_setup : Install required base packages] ***************************
+ok: [server3]
+
+TASK [server_setup : Add Docker GPG key] ***************************************
+ok: [server3]
+
+TASK [server_setup : Add Docker apt repository] ********************************
+ok: [server3]
+
+TASK [server_setup : Install Docker Engine and Compose plugin] *****************
+ok: [server3]
+
+TASK [server_setup : Start and enable Docker service] **************************
+ok: [server3]
+
+TASK [server_setup : Add user(s) to the docker group] **************************
+ok: [server3] => (item=ubuntu)
+
+TASK [server_setup : Set Docker registry mirrors] ******************************
+ok: [server3]
+
+TASK [server_setup : Allow SSH through the firewall] ***************************
+ok: [server3]
+
+TASK [server_setup : Allow HTTP through the firewall] **************************
+ok: [server3]
+
+TASK [server_setup : Allow HTTPS through the firewall] *************************
+ok: [server3]
+
+TASK [server_setup : Enable UFW with a default-deny policy] ********************
+ok: [server3]
+
+TASK [network : Create shared Docker bridge network] ***************************
+ok: [server3]
+
+TASK [network : Create Nginx project directory] ********************************
+ok: [server3]
+
+TASK [network : Create host directory for TLS certificates] ********************
+ok: [server3]
+
+TASK [network : Install OpenSSL] ***********************************************
+ok: [server3]
+
+TASK [network : Generate self-signed TLS certificate and private key] **********
+ok: [server3]
+
+TASK [network : Set TLS private key permissions] *******************************
+ok: [server3]
+
+TASK [network : Set TLS certificate permissions] *******************************
+ok: [server3]
+
+TASK [network : Check TLS certificate] *****************************************
+ok: [server3]
+
+TASK [network : Check TLS private key] *****************************************
+ok: [server3]
+
+TASK [network : Verify TLS files exist before starting Nginx] ******************
+ok: [server3] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [network : Render Nginx environment file] *********************************
+ok: [server3]
+
+TASK [network : Render Nginx reverse proxy configuration] **********************
+ok: [server3]
+
+TASK [network : Copy Nginx Docker Compose file] ********************************
+ok: [server3]
+
+TASK [network : Deploy Nginx reverse proxy] ************************************
+ok: [server3]
+
+TASK [/mnt/z/Codes/Team/roles/app_setup : Create root directory for Vikunja] ***
+ok: [server3]
+
+TASK [/mnt/z/Codes/Team/roles/app_setup : Create files directory for Vikunja attachments] ***
+ok: [server3]
+
+TASK [/mnt/z/Codes/Team/roles/app_setup : Create db directory for PostgreSQL persistence] ***
+ok: [server3]
+
+TASK [/mnt/z/Codes/Team/roles/app_setup : Copy docker compose file] ************
+ok: [server3]
+
+TASK [/mnt/z/Codes/Team/roles/app_setup : Render secret environment file] ******
+ok: [server3]
+
+TASK [/mnt/z/Codes/Team/roles/app_setup : Run Docker compose of Vikunja] *******
+ok: [server3]
+
+PLAY RECAP *********************************************************************
+server3                    : ok=34   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

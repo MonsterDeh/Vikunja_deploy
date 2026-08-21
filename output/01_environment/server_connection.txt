@@ -1,0 +1,32 @@
+===== Kernel version (uname -a) =====
+Linux ubuntuserver 5.15.0-187-generic #197-Ubuntu SMP Fri Jul 17 19:17:01 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+===== OS version (lsb_release -a) =====
+Distributor ID:	Ubuntu
+Description:	Ubuntu 22.04.5 LTS
+Release:	22.04
+Codename:	jammy
+
+===== Disk usage (df -h) =====
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  1.4M  390M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv  9.8G  5.1G  4.2G  55% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/sda2                          1.8G  133M  1.5G   9% /boot
+tmpfs                              392M  4.0K  392M   1% /run/user/1000
+
+===== Memory usage (free -h) =====
+               total        used        free      shared  buff/cache   available
+Mem:           3.8Gi       329Mi       2.8Gi        18Mi       732Mi       3.3Gi
+Swap:             0B          0B          0B
+
+===== Network interfaces (ip addr) =====
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+enp0s3           UP             192.168.1.5/24 metric 100 fe80::a00:27ff:fe52:e514/64 
+br-c5f3a3b08048  UP             172.19.0.1/16 fe80::6833:adff:fe99:53be/64 
+br-f0053adde3c2  DOWN           172.18.0.1/16 
+docker0          DOWN           172.17.0.1/16 
+veth8a81fda@if2  UP             fe80::8468:38ff:fe89:605d/64 
+veth405025c@if2  UP             fe80::fe:f0ff:fe7b:b5bd/64 
+vethecde420@if2  UP             fe80::cc3a:ddff:fef2:c8d4/64 
